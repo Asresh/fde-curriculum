@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101d2a">
+  <meta name="description" content="A free, practical 20-chapter path to becoming a Forward Deployed Engineer, from customer discovery to production AI delivery.">
+  <title>FDE Field Guide — From first conversation to production</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="curriculum.js" defer></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#top" aria-label="FDE Field Guide home"><span class="brand-mark">F</span><span>FIELDGUIDE<span class="wordmark-dot">/</span>FDE</span></a>
+      <div class="topbar-right"><span class="free-badge"><i></i> OPEN CURRICULUM</span><a class="top-link" href="#course-map">Course map <span aria-hidden="true">↓</span></a></div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> THE FORWARD DEPLOYED ENGINEER FIELD GUIDE</p>
+          <h1>Make AI work<br><em>where the work happens.</em></h1>
+          <p class="hero-intro">A practical route from the first customer conversation to a reliable AI system in production. Learn the engineering, delivery, and judgment that make an FDE useful on day one.</p>
+          <div class="hero-actions"><button class="primary-button" id="resume-button">Start the curriculum <span aria-hidden="true">→</span></button><a class="text-button" href="#course-map">Explore all 20 chapters <span aria-hidden="true">↓</span></a></div>
+          <div class="hero-meta"><span><b>20</b> chapters</span><span class="meta-divider"></span><span><b>~45</b> focused hours</span><span class="meta-divider"></span><span><b>4</b> build phases</span></div>
+        </div>
+        <div class="hero-art" aria-label="The FDE delivery loop: Discover, Build, Deploy, Prove">
+          <div class="art-topline"><span>THE DELIVERY LOOP</span><span class="live-dot">FIELD NOTES / 01</span></div>
+          <div class="loop-map">
+            <div class="loop-orbit orbit-one"></div><div class="loop-orbit orbit-two"></div>
+            <div class="loop-core"><span class="core-spark">✳</span><span>REAL<br>OUTCOME</span></div>
+            <div class="loop-node node-discover"><span class="node-index">01</span><span>DISCOVER</span></div>
+            <div class="loop-node node-build"><span class="node-index">02</span><span>BUILD</span></div>
+            <div class="loop-node node-deploy"><span class="node-index">03</span><span>DEPLOY</span></div>
+            <div class="loop-node node-prove"><span class="node-index">04</span><span>PROVE</span></div>
+            <span class="loop-arrow arrow-a">↗</span><span class="loop-arrow arrow-b">↘</span><span class="loop-arrow arrow-c">↙</span><span class="loop-arrow arrow-d">↖</span>
+          </div>
+          <div class="art-foot"><span>LISTEN CLOSELY</span><span>SHIP THE THIN SLICE</span><span>MEASURE WHAT CHANGED</span></div>
+        </div>
+        <div class="hero-index">CURRICULUM<br>01 — 20</div>
+      </section>
+
+      <section class="proof-strip" aria-label="Curriculum design principles"><div><span class="proof-number">01</span><span>Customer context<br><b>before the model</b></span></div><div><span class="proof-number">02</span><span>Working software<br><b>before slideware</b></span></div><div><span class="proof-number">03</span><span>Evidence of value<br><b>before handoff</b></span></div><div class="strip-note">A course for people who<br>own the last mile.</div></section>
+
+      <section class="course-area" id="course-map">
+        <div class="section-heading">
+          <div><p class="eyebrow dark-eyebrow"><span class="eyebrow-line"></span> YOUR LEARNING PATH</p><h2>Twenty chapters.<br><em>One real delivery arc.</em></h2></div>
+          <div class="overall-progress"><div class="progress-copy"><span>YOUR PROGRESS</span><b id="progress-label">0 / 20 complete</b></div><div class="progress-track"><span id="progress-fill"></span></div></div>
+        </div>
+
+        <div class="learning-layout">
+          <aside class="phase-rail" aria-label="Course phases">
+            <div class="rail-label">COURSE MAP <span>4 PHASES</span></div>
+            <nav id="phase-nav"></nav>
+            <div class="rail-card"><span class="rail-card-icon">↗</span><p>Keep one customer workflow in mind as you move through the course.</p><span class="rail-card-foot">THE CAPSTONE THREAD</span></div>
+            <a class="resource-link" href="#capstone">Capstone brief <span>↗</span></a>
+          </aside>
+
+          <div class="chapter-column">
+            <div class="chapter-toolbar"><div><span class="toolbar-kicker">THE ROADMAP</span><h3>Choose your next move</h3></div><label class="search-box"><span aria-hidden="true">⌕</span><input id="chapter-search" type="search" placeholder="Find a chapter" aria-label="Find a chapter"><kbd>/</kbd></label></div>
+            <div id="phase-sections" class="phase-sections"></div>
+          </div>
+
+          <aside class="detail-panel" id="chapter-detail" aria-live="polite">
+            <div class="detail-empty"><span class="detail-compass">✳</span><p class="panel-overline">YOUR FIELD GUIDE</p><h3>Pick a chapter<br>to see the brief.</h3><p>Each chapter ends with something you can show, test, or use with a real team.</p><div class="empty-rule"><span></span><span></span><span></span></div><small>START ANYWHERE · LEARN BY SHIPPING</small></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="capstone-section" id="capstone">
+        <div class="capstone-label"><span class="capstone-star">✳</span> YOUR FINAL FIELD TEST</div>
+        <div class="capstone-content"><div><p class="eyebrow"><span class="eyebrow-line"></span> CHAPTER 20 / THE CAPSTONE</p><h2>From messy workflow<br>to <em>measurable change.</em></h2></div><p>Choose a real or simulated team, find a costly workflow, and deliver a small AI-enabled improvement that respects its data, users, and operating constraints. Leave with a demo, a decision record, and evidence of what changed.</p><a href="#course-map" class="capstone-cta" data-open-chapter="20">See the capstone brief <span>→</span></a></div>
+        <div class="capstone-foot"><span>DISCOVERY NOTES</span><span>WORKING PRODUCT</span><span>RUNBOOK + HANDOFF</span><span>BEFORE / AFTER EVIDENCE</span></div>
+      </section>
+
+      <section class="method-section" id="method">
+        <div class="sources-heading"><div><p class="eyebrow dark-eyebrow"><span class="eyebrow-line"></span> THE FIELD METHOD</p><h2>Learn by moving<br><em>one workflow forward.</em></h2></div><p>Carry the same customer problem through the course. Each step adds a concrete decision or working artifact until you can explain what changed and how to operate it.</p></div>
+        <div class="source-cards">
+          <article class="source-card"><span class="source-tag">01 / UNDERSTAND</span><b>Start with the people doing the work</b><span>Map the current process, its exceptions, the systems involved, and the result that would matter.</span></article>
+          <article class="source-card"><span class="source-tag">02 / DELIVER</span><b>Build a narrow, usable slice</b><span>Connect representative data, make the boundaries explicit, and leave a safe path for human judgment.</span></article>
+          <article class="source-card"><span class="source-tag">03 / IMPROVE</span><b>Show evidence and hand over</b><span>Record what worked, what did not, who owns operations, and what the next decision should be.</span></article>
+        </div>
+        <p class="source-note">Use synthetic information for practice. Use real customer data only with explicit authorization.</p>
+      </section>
+    </main>
+
+    <footer class="footer"><a class="wordmark footer-brand" href="#top"><span class="brand-mark">F</span><span>FIELDGUIDE<span class="wordmark-dot">/</span>FDE</span></a><span>BUILT FOR THE LAST MILE.</span><a href="#top">Back to top ↑</a></footer>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>
