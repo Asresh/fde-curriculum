@@ -60,13 +60,74 @@
     const previous = chapters.find(item => item.id === id - 1);
     const next = chapters.find(item => item.id === id + 1);
     const isComplete = completed.has(chapter.id);
-    detail.innerHTML = `<article class="detail-content"><div class="detail-headerline"><span class="detail-phase-tag">${phase.number} / ${escapeHTML(phase.name)}</span><span class="detail-time">${escapeHTML(chapter.time)}</span></div><p class="detail-kicker">CHAPTER ${String(chapter.id).padStart(2,"0")} · FIELD BRIEF</p><h3>${escapeHTML(chapter.title)}</h3><p class="detail-summary">${escapeHTML(chapter.summary)}</p><section class="detail-section"><h4>YOU WILL BE ABLE TO</h4><ul>${chapter.outcomes.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul></section><section class="detail-section"><h4>IN THIS CHAPTER</h4><ul>${chapter.lessons.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul></section><section class="detail-section"><h4>FIELD EXERCISE</h4><p>${escapeHTML(chapter.exercise)}</p></section><div class="artifact-box"><span>TAKE THIS WITH YOU</span><b>${escapeHTML(chapter.artifact)}</b></div><div class="detail-actions"><button type="button" class="complete-button${isComplete ? " done" : ""}" data-action="complete">${isComplete ? "✓ Completed — mark open" : "Mark chapter complete"}</button>${next ? `<button type="button" class="next-button" data-action="next" aria-label="Next chapter">Next →</button>` : previous ? `<button type="button" class="next-button" data-action="next" aria-label="Back to chapter 19">← Back</button>` : ""}</div></article>`;
+    const example = (window.CURRICULUM_EXAMPLES || {})[chapter.id];
+    const exampleHtml = example ? `
+      <section class="code-example" aria-labelledby="code-example-title">
+        <div class="code-example-head">
+          <div>
+            <p class="detail-kicker">CODE EXAMPLE · ${escapeHTML(example.language)}</p>
+            <h4 id="code-example-title">${escapeHTML(example.title)}</h4>
+          </div>
+          <button type="button" class="copy-code-button" data-action="copy-code">Copy code</button>
+        </div>
+        <p class="code-example-description">${escapeHTML(example.description)}</p>
+        <pre><code>${escapeHTML(example.code)}</code></pre>
+        <div class="code-example-notes">
+          <b>READ THE EXAMPLE</b>
+          <ul>${example.walkthrough.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+        </div>
+        <p class="copy-status" role="status" aria-live="polite"></p>
+      </section>` : "";
+
+    detail.innerHTML = `
+      <article class="detail-content">
+        <div class="detail-headerline">
+          <span class="detail-phase-tag">${phase.number} / ${escapeHTML(phase.name)}</span>
+          <span class="detail-time">${escapeHTML(chapter.time)}</span>
+        </div>
+        <p class="detail-kicker">CHAPTER ${String(chapter.id).padStart(2, "0")} · FIELD BRIEF</p>
+        <h3>${escapeHTML(chapter.title)}</h3>
+        <p class="detail-summary">${escapeHTML(chapter.summary)}</p>
+        <section class="detail-section">
+          <h4>YOU WILL BE ABLE TO</h4>
+          <ul>${chapter.outcomes.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+        </section>
+        <section class="detail-section">
+          <h4>IN THIS CHAPTER</h4>
+          <ul>${chapter.lessons.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+        </section>
+        ${exampleHtml}
+        <section class="detail-section">
+          <h4>FIELD EXERCISE</h4>
+          <p>${escapeHTML(chapter.exercise)}</p>
+        </section>
+        <div class="artifact-box">
+          <span>TAKE THIS WITH YOU</span>
+          <b>${escapeHTML(chapter.artifact)}</b>
+        </div>
+        <div class="detail-actions">
+          <button type="button" class="complete-button${isComplete ? " done" : ""}" data-action="complete">
+            ${isComplete ? "✓ Completed — mark open" : "Mark chapter complete"}
+          </button>
+          ${next ? `<button type="button" class="next-button" data-action="next" aria-label="Next chapter">Next →</button>` : previous ? `<button type="button" class="next-button" data-action="next" aria-label="Back to chapter 19">← Back</button>` : ""}
+        </div>
+      </article>`;
     detail.querySelector("[data-action='complete']").addEventListener("click", () => {
       if (completed.has(chapter.id)) completed.delete(chapter.id); else completed.add(chapter.id);
       saveProgress();
     });
     const nextButton = detail.querySelector("[data-action='next']");
     if (nextButton) nextButton.addEventListener("click", () => selectChapter(next ? next.id : previous.id));
+    const copyButton = detail.querySelector("[data-action='copy-code']");
+    if (copyButton && example) copyButton.addEventListener("click", async () => {
+      const status = detail.querySelector(".copy-status");
+      try {
+        await navigator.clipboard.writeText(example.code);
+        status.textContent = "Code copied.";
+      } catch (_) {
+        status.textContent = "Clipboard unavailable. Select the snippet to copy it.";
+      }
+    });
   }
 
   function selectChapter(id) {

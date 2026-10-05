@@ -17,7 +17,7 @@ Open `index.html` in a modern browser. The site is static: it needs no account, 
 | Applied AI | 11–15 | Model choices, retrieval, bounded agents, evaluation, security |
 | Production + impact | 16–20 | Deployment, operations, adoption, value proof, capstone |
 
-Each chapter contains learning outcomes, a lesson outline, a field exercise, and a portfolio artifact. The capstone threads one workflow through discovery, build, deployment, operations, and customer readout. Use synthetic information for practice; use real customer data only with explicit authorization.
+Each chapter contains learning outcomes, a lesson outline, a detailed code example, a field exercise, and a portfolio artifact. The examples cover service boundaries, SQL, integrations, retrieval, evaluation, authorization, deployment, observability, and human approval. The capstone threads one workflow through discovery, build, deployment, operations, and customer readout. Use synthetic information for practice; use real customer data only with explicit authorization.
 
 ## Field method
 
@@ -32,7 +32,8 @@ Carry one workflow from the first chapter to the capstone:
 - `index.html` — course overview, navigation, and interactive chapter layout
 - `styles.css` — responsive visual design
 - `curriculum.js` — all 20 original chapter briefs
-- `app.js` — chapter navigation, search, progress tracking, and detail panel
+- `chapter-examples.js` — 20 original, annotated code examples
+- `app.js` — chapter navigation, search, progress tracking, code examples, and detail panel
 
 ## License
 
