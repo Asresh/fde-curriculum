@@ -17,7 +17,7 @@ Open `index.html` in a modern browser. The site is static: it needs no account, 
 | Applied AI | 11–15 | Model choices, retrieval, bounded agents, evaluation, security |
 | Production + impact | 16–20 | Deployment, operations, adoption, value proof, capstone |
 
-Each chapter contains learning outcomes, a lesson outline, a detailed code example, a field exercise, and a portfolio artifact. The examples cover service boundaries, SQL, integrations, retrieval, evaluation, authorization, deployment, observability, and human approval. The capstone threads one workflow through discovery, build, deployment, operations, and customer readout. Use synthetic information for practice; use real customer data only with explicit authorization.
+Each chapter opens as a dedicated reading page with a study plan that adds up to its stated time. Pages combine detailed explanations, an annotated code walkthrough, a visual model, a hands-on exercise, and a short self-check. The examples cover service boundaries, SQL, integrations, retrieval, evaluation, authorization, deployment, observability, and human approval. The capstone threads one workflow through discovery, build, deployment, operations, and customer readout. Use synthetic information for practice; use real customer data only with explicit authorization.
 
 ## Field method
 
@@ -29,11 +29,12 @@ Carry one workflow from the first chapter to the capstone:
 
 ## Files
 
-- `index.html` — course overview, navigation, and interactive chapter layout
+- `index.html` — course overview and chapter reader shell
 - `styles.css` — responsive visual design
 - `curriculum.js` — all 20 original chapter briefs
 - `chapter-examples.js` — 20 original, annotated code examples
-- `app.js` — chapter navigation, search, progress tracking, code examples, and detail panel
+- `chapter-lessons.js` — original lesson sections, workflow models, labs, and knowledge checks for all chapters
+- `app.js` — chapter routing, search, progress tracking, reading plans, and page rendering
 
 ## License
 
