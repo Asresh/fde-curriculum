@@ -17,7 +17,7 @@ Open `index.html` in a modern browser. The site is static: it needs no account, 
 | Applied AI | 11–15 | Model choices, retrieval, bounded agents, evaluation, security |
 | Production + impact | 16–20 | Deployment, operations, adoption, value proof, capstone |
 
-Each chapter opens as a dedicated reading page with a study plan that adds up to its stated time. Pages combine detailed explanations, an annotated code walkthrough, a visual model, a hands-on exercise, and a short self-check. The examples cover service boundaries, SQL, integrations, retrieval, evaluation, authorization, deployment, observability, and human approval. The capstone threads one workflow through discovery, build, deployment, operations, and customer readout. Use synthetic information for practice; use real customer data only with explicit authorization.
+Each chapter opens as a dedicated study page whose timed activities add up to the estimate in the course map. A session includes concept reading and notes, a code trace with a small change, a realistic field scenario, a timed build lab with concrete deliverables, and a review. The examples cover service boundaries, SQL, integrations, retrieval, evaluation, authorization, deployment, observability, and human approval. The capstone is a five-hour sequence of discovery, design, implementation, evaluation, and handoff work. Use synthetic information for practice; use real customer data only with explicit authorization.
 
 ## Field method
 
@@ -33,8 +33,9 @@ Carry one workflow from the first chapter to the capstone:
 - `styles.css` — responsive visual design
 - `curriculum.js` — all 20 original chapter briefs
 - `chapter-examples.js` — 20 original, annotated code examples
-- `chapter-lessons.js` — original lesson sections, workflow models, labs, and knowledge checks for all chapters
-- `app.js` — chapter routing, search, progress tracking, reading plans, and page rendering
+- `chapter-lessons.js` — original lesson sections, workflow models, exercises, and knowledge checks for all chapters
+- `chapter-study.js` — chapter-specific scenarios, code tasks, timed lab tasks, and deliverables
+- `app.js` — chapter routing, search, progress tracking, timed study plans, and page rendering
 
 ## License
 

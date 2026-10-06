@@ -4,6 +4,7 @@
   const completedKey = "asresh-fde-curriculum-progress-v1";
   const reader = document.getElementById("chapter-reader");
   const lessonContent = window.CURRICULUM_LESSONS || {};
+  const studyContent = window.CURRICULUM_STUDY || {};
   const requestedId = Number(new URLSearchParams(window.location.search).get("chapter"));
   let completed = new Set();
   let selectedId = chapters.some(chapter => chapter.id === requestedId) ? requestedId : 1;
@@ -153,10 +154,11 @@
 
   function renderCodeExample(example, chapterId) {
     if (!example) return "";
+    const study = studyContent[chapterId] || {};
     return `<section class="reader-code code-example" aria-labelledby="reader-code-title">
       <div class="code-example-head"><div><p class="detail-kicker">CODE WALKTHROUGH · ${escapeHTML(example.language)}</p><h3 id="reader-code-title">${escapeHTML(example.title)}</h3></div><button type="button" class="copy-code-button" data-reader-copy="${chapterId}">Copy code</button></div>
       <p class="code-example-description">${escapeHTML(example.description)}</p><pre><code>${escapeHTML(example.code)}</code></pre>
-      <div class="code-example-notes"><b>TRACE THE DECISIONS</b><ul>${example.walkthrough.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul></div><p class="copy-status" role="status" aria-live="polite"></p>
+      <div class="code-example-notes"><b>TRACE THE DECISIONS</b><ul>${example.walkthrough.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul><div class="code-practice"><b>NOW WORK IT THROUGH</b><p>${escapeHTML(study.codeTask || "Run the example, trace its inputs and outputs, then change one requirement and test the result.")}</p></div></div><p class="copy-status" role="status" aria-live="polite"></p>
     </section>`;
   }
 
@@ -172,19 +174,22 @@
     const chapter = chapters.find(item => item.id === id);
     if (!chapter) return;
     const lesson = lessonContent[id] || {};
+    const study = studyContent[id] || {};
     const phase = findPhase(chapter.phase);
     const example = (window.CURRICULUM_EXAMPLES || {})[id];
     const previous = chapters.find(item => item.id === id - 1);
     const next = chapters.find(item => item.id === id + 1);
     const totalMinutes = minutesFor(chapter.time);
+    const labMinutes = (study.tasks || []).reduce((sum, task) => sum + task.minutes, 0);
     const plan = [
-      { label: "Read the guide", minutes: Math.floor(totalMinutes * .25) },
-      { label: "Trace the code", minutes: Math.floor(totalMinutes * .20) },
-      { label: "Build the exercise", minutes: Math.floor(totalMinutes * .45) },
-      { label: "Review and reflect", minutes: totalMinutes - Math.floor(totalMinutes * .25) - Math.floor(totalMinutes * .20) - Math.floor(totalMinutes * .45) }
+      { label: "Study the concepts", minutes: study.learn || 0, detail: "Read each section slowly, annotate unfamiliar terms, and test the ideas against the field scenario." },
+      { label: "Work through the code", minutes: study.code || 0, detail: study.codeTask || "Trace inputs, outputs, and failure behavior; then make and test one small change." },
+      { label: "Build the guided lab", minutes: labMinutes, detail: "Complete the timed tasks below and keep the listed deliverables." },
+      { label: "Review and document", minutes: study.review || 0, detail: "Answer the self-check from memory, inspect your artifact against the outcomes, and write one next question." }
     ];
     const sections = lesson.sections || [];
     const articleSections = sections.map((section, index) => `
+      ${index === 1 && study.case ? `<section class="reader-field-case" id="reader-field-case"><p class="reader-overline">FIELD SCENARIO · PAUSE BEFORE REVEALING THE DEBRIEF</p><h2>${escapeHTML(study.case.title)}</h2><p>${escapeHTML(study.case.story)}</p><div class="case-question"><b>YOUR DECISION</b><p>${escapeHTML(study.case.question)}</p><details><summary>Show a reasoned approach</summary><p>${escapeHTML(study.case.answer)}</p></details></div></section>` : ""}
       ${index === 1 ? renderCodeExample(example, id) : ""}
       <section class="lesson-section" id="lesson-section-${index + 1}"><p class="reader-overline">${String(index + 1).padStart(2, "0")} / LEARN</p><h2>${escapeHTML(section.title)}</h2>${section.paragraphs.map(paragraph => `<p>${escapeHTML(paragraph)}</p>`).join("")}</section>
     `).join("");
@@ -194,16 +199,16 @@
     document.title = `${chapter.title} — FDE Field Guide`;
     reader.innerHTML = `
       <header class="reader-topbar"><a class="reader-brand" href="index.html"><span class="brand-mark">F</span><span>FIELDGUIDE<span class="wordmark-dot">/</span>FDE</span></a><a class="reader-back" href="index.html#course-map">← All chapters</a></header>
-      <section class="reader-hero"><div class="reader-hero-inner"><div class="reader-hero-copy"><div class="reader-breadcrumb"><span>${escapeHTML(phase.number)} · ${escapeHTML(phase.name)}</span><span>CHAPTER ${String(id).padStart(2,"0")} / 20</span></div><p class="eyebrow"><span class="eyebrow-line"></span> FIELD GUIDE · ${escapeHTML(chapter.time)} GUIDED STUDY</p><h1>${escapeHTML(chapter.title)}</h1><p>${escapeHTML(chapter.summary)}</p><div class="reader-hero-meta"><span>READ · TRACE · BUILD · REVIEW</span><span>${escapeHTML(chapter.artifact)}</span></div></div><aside class="study-plan"><span class="study-plan-kicker">YOUR ${escapeHTML(chapter.time).toUpperCase()} STUDY PLAN</span><p>The chapter time includes reading, code walkthrough, hands-on work, and review.</p>${plan.map(item => `<div class="study-plan-row"><span>${escapeHTML(item.label)}</span><b>${durationLabel(item.minutes)}</b><i><span style="width:${Math.round(item.minutes/totalMinutes*100)}%"></span></i></div>`).join("")}</aside></div></section>
+      <section class="reader-hero"><div class="reader-hero-inner"><div class="reader-hero-copy"><div class="reader-breadcrumb"><span>${escapeHTML(phase.number)} · ${escapeHTML(phase.name)}</span><span>CHAPTER ${String(id).padStart(2,"0")} / 20</span></div><p class="eyebrow"><span class="eyebrow-line"></span> FIELD GUIDE · ${escapeHTML(chapter.time)} GUIDED STUDY</p><h1>${escapeHTML(chapter.title)}</h1><p>${escapeHTML(chapter.summary)}</p><div class="reader-hero-meta"><span>READ · TRACE · BUILD · REVIEW</span><span>${escapeHTML(chapter.artifact)}</span></div></div><aside class="study-plan"><span class="study-plan-kicker">YOUR ${escapeHTML(chapter.time).toUpperCase()} STUDY PLAN</span><p>This is a guided study session. The timed activities below add up to the roadmap estimate.</p>${plan.map(item => `<div class="study-plan-row"><span>${escapeHTML(item.label)}</span><b>${durationLabel(item.minutes)}</b><i><span style="width:${Math.round(item.minutes/totalMinutes*100)}%"></span></i><small>${escapeHTML(item.detail)}</small></div>`).join("")}</aside></div></section>
       <div class="reader-layout"><article class="lesson-article">
         <section class="reader-outcomes"><p class="reader-overline">BY THE END OF THIS CHAPTER</p><ul>${chapter.outcomes.map(item=>`<li>${escapeHTML(item)}</li>`).join("")}</ul></section>
         ${articleSections}
         <section class="workflow-model"><p class="reader-overline">KEEP THIS MODEL IN VIEW</p><h2>${escapeHTML(model.title)}</h2><div class="workflow-steps">${model.steps.map((step,index)=>`<div class="workflow-step"><span>${String(index+1).padStart(2,"0")}</span><b>${escapeHTML(step)}</b>${index<model.steps.length-1?`<i aria-hidden="true">↓</i>`:""}</div>`).join("")}</div></section>
-        <section class="reader-lab"><p class="reader-overline">HANDS-ON · ${escapeHTML(chapter.time)}</p><h2>Put it to work</h2><p class="lab-intro">Complete this field exercise in your own project or with synthetic data. The goal is a useful artifact, not a polished demo.</p><ol>${(lesson.lab||[]).map(item=>`<li>${escapeHTML(item)}</li>`).join("")}</ol><div class="reader-artifact"><span>TAKE THIS WITH YOU</span><b>${escapeHTML(chapter.artifact)}</b></div></section>
-        <section class="reader-checks"><p class="reader-overline">REVIEW · CLOSE YOUR NOTES FIRST</p><h2>Check your understanding</h2><p>Try each question before opening the explanation.</p>${(lesson.checks||[]).map(item=>`<details><summary>${escapeHTML(item.q)}</summary><p>${escapeHTML(item.a)}</p></details>`).join("")}</section>
+        <section class="reader-lab"><p class="reader-overline">GUIDED BUILD LAB · ${durationLabel(labMinutes)}</p><h2>Put it to work</h2><p class="lab-intro">${escapeHTML(chapter.exercise)} Work with synthetic data unless you have explicit approval for a real customer dataset. Spend the time shown on each task and keep its deliverable.</p><ol class="timed-lab">${(study.tasks||[]).map(item=>`<li><div><span class="lab-task-time">${durationLabel(item.minutes)}</span><b>${escapeHTML(item.title)}</b><p>${escapeHTML(item.instructions)}</p><small>DELIVERABLE · ${escapeHTML(item.output)}</small></div></li>`).join("")}</ol><div class="reader-artifact"><span>TAKE THIS WITH YOU</span><b>${escapeHTML(chapter.artifact)}</b></div></section>
+        <section class="reader-checks"><p class="reader-overline">REVIEW · ${durationLabel(study.review||0)} · CLOSE YOUR NOTES FIRST</p><h2>Check your understanding</h2><p>Answer from memory, open the explanation, then review your artifact against the chapter outcomes. Write one next question for a user, system owner, or reviewer.</p>${(lesson.checks||[]).map(item=>`<details><summary>${escapeHTML(item.q)}</summary><p>${escapeHTML(item.a)}</p></details>`).join("")}</section>
         <div class="reader-completion"><div><p class="reader-overline">CHAPTER ${String(id).padStart(2,"0")} DELIVERABLE</p><b>${escapeHTML(chapter.artifact)}</b></div><button class="complete-button${completed.has(id)?" done":""}" data-reader-complete>${completed.has(id)?"✓ Chapter complete — mark as in progress":"Mark chapter complete"}</button></div>
         <nav class="reader-pager" aria-label="Chapter navigation">${previous?`<a href="?chapter=${previous.id}"><small>PREVIOUS · ${String(previous.id).padStart(2,"0")}</small><b>← ${escapeHTML(previous.title)}</b></a>`:`<a href="index.html#course-map"><small>COURSE MAP</small><b>← All chapters</b></a>`}${next?`<a class="reader-pager-next" href="?chapter=${next.id}"><small>NEXT · ${String(next.id).padStart(2,"0")}</small><b>${escapeHTML(next.title)} →</b></a>`:`<a class="reader-pager-next" href="index.html#capstone"><small>FINISH</small><b>Return to course map ↑</b></a>`}</nav>
-      </article><aside class="reader-toc"><div><span>IN THIS CHAPTER</span><a href="#lesson-section-1">Learn the concept</a><a href="#reader-code-title">Trace the code</a><a href="#lesson-section-3">Connect the pieces</a><a href="#reader-lab-anchor">Hands-on exercise</a><a href="#reader-check-anchor">Knowledge check</a><hr><span>COURSE PROGRESS</span><b>${completed.size} / ${chapters.length} complete</b><div class="reader-progress-track"><i style="width:${chapters.length?completed.size/chapters.length*100:0}%"></i></div><a class="toc-map-link" href="index.html#course-map">Back to course map ↗</a></div></aside></div>`;
+      </article><aside class="reader-toc"><div><span>IN THIS CHAPTER</span><a href="#lesson-section-1">Learn the concept</a><a href="#reader-field-case">Field scenario</a><a href="#reader-code-title">Trace the code</a><a href="#lesson-section-3">Connect the pieces</a><a href="#reader-lab-anchor">Timed build lab</a><a href="#reader-check-anchor">Knowledge check</a><hr><span>COURSE PROGRESS</span><b>${completed.size} / ${chapters.length} complete</b><div class="reader-progress-track"><i style="width:${chapters.length?completed.size/chapters.length*100:0}%"></i></div><a class="toc-map-link" href="index.html#course-map">Back to course map ↗</a></div></aside></div>`;
     reader.querySelector(".reader-lab").id = "reader-lab-anchor";
     reader.querySelector(".reader-checks").id = "reader-check-anchor";
     const completeButton = reader.querySelector("[data-reader-complete]");
